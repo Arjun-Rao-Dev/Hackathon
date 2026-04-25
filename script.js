@@ -1,230 +1,220 @@
- <script>
-    // ---------- Helpers ----------
-    function todayISO() {
-      const d = new Date();
-      // Convert to YYYY-MM-DD in local time
-      const tzOffset = d.getTimezoneOffset() * 60000;
-      const local = new Date(d.getTime() - tzOffset);
-      return local.toISOString().slice(0, 10);
-    }
+ // ---------- Helpers ----------
+function todayISO() {
+const d = new Date();
+const tzOffset = d.getTimezoneOffset() * 60000;
+const local = new Date(d.getTime() - tzOffset);
+return local.toISOString().slice(0, 10);
+}
 
-    function uid() {
-      return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
-    }
+function uid() {
+return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16);
+}
 
-    function getTasks() {
-      try {
-        const raw = localStorage.getItem("caretakerTasks_v1");
-        return raw ? JSON.parse(raw) : [];
-      } catch {
-        return [];
-      }
-    }
+function getTasks() {
+try {
+const raw = localStorage.getItem("caretakerTasks_v1");
+return raw ? JSON.parse(raw) : [];
+} catch (err) {
+return [];
+}
+}
 
-    function setTasks(tasks) {
-      localStorage.setItem("caretakerTasks_v1", JSON.stringify(tasks));
-    }
+function setTasks(tasks) {
+localStorage.setItem("caretakerTasks_v1", JSON.stringify(tasks));
+}
 
-    function escapeText(s) {
-      // basic safety for text injection
-      return (s ?? "").toString()
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
+function escapeText(s) {
+return String(s ?? "")
+.replaceAll("&", "&amp;")
+.replaceAll("<", "&lt;")
+.replaceAll(">", "&gt;")
+.replaceAll('"', "&quot;")
+.replaceAll("'", "&#039;");
+}
 
-    // ---------- State ----------
-    let tasks = getTasks();
+// ---------- App ----------
+document.addEventListener("DOMContentLoaded", function () {
+let tasks = getTasks();
 
-    // Default both date inputs to today
-    const taskDateInput = document.getElementById("taskDate");
-    const filterDateInput = document.getElementById("filterDate");
-    const listEl = document.getElementById("taskList");
-    const daySummaryEl = document.getElementById("daySummary");
-    const countsLineEl = document.getElementById("countsLine");
+const taskDateInput = document.getElementById("taskDate");
+const filterDateInput = document.getElementById("filterDate");
+const listEl = document.getElementById("taskList");
+const daySummaryEl = document.getElementById("daySummary");
+const countsLineEl = document.getElementById("countsLine");
 
-    taskDateInput.value = todayISO();
-    filterDateInput.value = taskDateInput.value;
+taskDateInput.value = todayISO();
+filterDateInput.value = taskDateInput.value;
 
-    // ---------- Render ----------
-    function getDayTasks(dayISO) {
-      return tasks
-        .filter(t => t.date === dayISO)
-        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-    }
+function getDayTasks(dayISO) {
+return tasks
+.filter((t) => t.date === dayISO)
+.sort((a, b) => b.createdAt - a.createdAt);
+}
 
-    function countByType(dayISO) {
-      const dayTasks = tasks.filter(t => t.date === dayISO);
-      const counts = {
-        Medication: 0,
-        Meal: 0,
-        Appointment: 0,
-        Other: 0
-      };
-      for (const t of dayTasks) {
-        if (!counts[t.type]) counts[t.type] = 0;
-        counts[t.type]++;
-      }
-      return counts;
-    }
+function countByType(dayISO) {
+const counts = {
+Medication: 0,
+Meal: 0,
+Appointment: 0,
+Other: 0
+};
 
-    function render() {
-      const day = filterDateInput.value || todayISO();
-      const dayTasks = getDayTasks(day);
+tasks
+.filter((t) => t.date === dayISO)
+.forEach((t) => {
+counts[t.type] = (counts[t.type] || 0) + 1;
+});
 
-      daySummaryEl.textContent = `Showing tasks for ${day}. (${dayTasks.length} total)`;
+return counts;
+}
 
-      if (dayTasks.length === 0) {
-        listEl.innerHTML = '<div class="empty">No tasks logged for this day yet.</div>';
-        const c = countByType(day);
-        countsLineEl.textContent =
-          `Medication: ${c.Medication} • Meal: ${c.Meal} • Appointment: ${c.Appointment} • Other: ${c.Other}`;
-        return;
-      }
+function render() {
+const day = filterDateInput.value || todayISO();
+const dayTasks = getDayTasks(day);
 
-      listEl.innerHTML = dayTasks.map(t => {
-        const details = (t.details && t.details.trim()) ? t.details.trim() : "—";
-        return `
-          <div class="task-item">
-            <div class="task-top">
-              <div class="badge">${escapeText(t.type)}</div>
-              <div class="meta">
-                ${escapeText(t.caregiver)} • added ${new Date(t.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-              </div>
-            </div>
-            <div class="task-desc">${escapeText(details)}</div>
-            <div class="task-actions">
-              <button class="link-btn" type="button" data-action="delete" data-id="${escapeText(t.id)}">Delete</button>
-            </div>
-          </div>
-        `;
-      }).join("");
+daySummaryEl.textContent = `Showing tasks for ${day}. (${dayTasks.length} total)`;
 
-      const c = countByType(day);
-      countsLineEl.textContent =
-        `Medication: ${c.Medication} • Meal: ${c.Meal} • Appointment: ${c.Appointment} • Other: ${c.Other}`;
-    }
+const c = countByType(day);
+countsLineEl.textContent =
+`Medication: ${c.Medication} • Meal: ${c.Meal} • Appointment: ${c.Appointment} • Other: ${c.Other}`;
 
-    // ---------- Events ----------
-    document.getElementById("taskForm").addEventListener("submit", (e) => {
-      e.preventDefault();
+if (dayTasks.length === 0) {
+listEl.innerHTML = `<div class="empty">No tasks logged for this day yet.</div>`;
+return;
+}
 
-      const caregiverName = document.getElementById("caregiverName").value.trim();
-      const date = document.getElementById("taskDate").value;
-      const type = document.getElementById("taskType").value;
-      const details = document.getElementById("taskDetails").value.trim();
+listEl.innerHTML = dayTasks
+.map((t) => {
+const details = t.details && t.details.trim() ? t.details.trim() : "—";
 
-      if (!caregiverName || !date || !type) return;
+return `
+<div class="task-item">
+<div class="task-top">
+<div class="badge">${escapeText(t.type)}</div>
+<div class="meta">
+${escapeText(t.caregiver)} • added ${new Date(t.createdAt).toLocaleTimeString([], {
+hour: "2-digit",
+minute: "2-digit"
+})}
+</div>
+</div>
 
-      const newTask = {
-        id: uid(),
-        caregiver: caregiverName,
-        date: date,
-        type: type,
-        details: details,
-        createdAt: Date.now()
-      };
+<div class="task-desc">${escapeText(details)}</div>
 
-      tasks.push(newTask);
-      setTasks(tasks);
+<div class="task-actions">
+<button class="link-btn" type="button" data-action="delete" data-id="${escapeText(t.id)}">
+Delete
+</button>
+</div>
+</div>
+`;
+})
+.join("");
+}
 
-      // Move the view to the selected task day
-      filterDateInput.value = date;
+document.getElementById("taskForm").addEventListener("submit", function (e) {
+e.preventDefault();
 
-      // Reset some fields
-      document.getElementById("taskDetails").value = "";
+const caregiverName = document.getElementById("caregiverName").value.trim();
+const date = document.getElementById("taskDate").value;
+const type = document.getElementById("taskType").value;
+const details = document.getElementById("taskDetails").value.trim();
 
-      render();
-    });
+if (!caregiverName || !date || !type) return;
 
-    listEl.addEventListener("click", (e) => {
-      const btn = e.target.closest('button[data-action="delete"]');
-      if (!btn) return;
+tasks.push({
+id: uid(),
+caregiver: caregiverName,
+date,
+type,
+details,
+createdAt: Date.now()
+});
 
-      const id = btn.getAttribute("data-id");
-      tasks = tasks.filter(t => t.id !== id);
-      setTasks(tasks);
-      render();
-    });
+setTasks(tasks);
 
-    filterDateInput.addEventListener("change", render);
+filterDateInput.value = date;
+document.getElementById("taskDetails").value = "";
 
-    document.getElementById("clearDayBtn").addEventListener("click", () => {
-      const day = filterDateInput.value || todayISO();
-      const remaining = tasks.filter(t => t.date !== day);
+render();
+});
 
-      if (remaining.length === tasks.length) {
-        render();
-        return;
-      }
+listEl.addEventListener("click", function (e) {
+const btn = e.target.closest('button[data-action="delete"]');
+if (!btn) return;
 
-      tasks = remaining;
-      setTasks(tasks);
-      render();
-    });
+const id = btn.getAttribute("data-id");
+tasks = tasks.filter((t) => t.id !== id);
+setTasks(tasks);
+render();
+});
 
-    // Accessibility toggles
-    const toggleInvertBtn = document.getElementById("toggleInvert");
-    const toggleDyslexicBtn = document.getElementById("toggleDyslexic");
+filterDateInput.addEventListener("change", render);
 
-    toggleInvertBtn.addEventListener("click", () => {
-      document.body.classList.toggle("access-invert");
-    });
+document.getElementById("clearDayBtn").addEventListener("click", function () {
+const day = filterDateInput.value || todayISO();
+tasks = tasks.filter((t) => t.date !== day);
+setTasks(tasks);
+render();
+});
 
-    toggleDyslexicBtn.addEventListener("click", () => {
-      document.body.classList.toggle("access-dyslexic");
-    });
+document.getElementById("toggleInvert").addEventListener("click", function () {
+document.body.classList.toggle("access-invert");
+});
 
-    // Export / Import
-    document.getElementById("exportBtn").addEventListener("click", () => {
-      const payload = {
-        version: 1,
-        exportedAt: new Date().toISOString(),
-        tasks
-      };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
+document.getElementById("toggleDyslexic").addEventListener("click", function () {
+document.body.classList.toggle("access-dyslexic");
+});
 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "caregiver-task-tracker-export.json";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+document.getElementById("exportBtn").addEventListener("click", function () {
+const payload = {
+version: 1,
+exportedAt: new Date().toISOString(),
+tasks
+};
 
-      URL.revokeObjectURL(url);
-    });
+const blob = new Blob([JSON.stringify(payload, null, 2)], {
+type: "application/json"
+});
 
-    document.getElementById("importFile").addEventListener("change", async (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
 
-      try {
-        const text = await file.text();
-        const data = JSON.parse(text);
+a.href = url;
+a.download = "caregiver-task-tracker-export.json";
+document.body.appendChild(a);
+a.click();
+a.remove();
 
-        if (!data || !Array.isArray(data.tasks)) {
-          alert("Invalid import file format.");
-          return;
-        }
+URL.revokeObjectURL(url);
+});
 
-        // Replace tasks with imported tasks
-        tasks = data.tasks;
-        setTasks(tasks);
+document.getElementById("importFile").addEventListener("change", async function (e) {
+const file = e.target.files && e.target.files[0];
+if (!file) return;
 
-        // Sync view to today or the date used in imported data if available
-        filterDateInput.value = taskDateInput.value = todayISO();
+try {
+const text = await file.text();
+const data = JSON.parse(text);
 
-        render();
-      } catch {
-        alert("Could not read that file. Please import a valid JSON export.");
-      } finally {
-        e.target.value = "";
-      }
-    });
+if (!data || !Array.isArray(data.tasks)) {
+alert("Invalid import file format.");
+return;
+}
 
-    // Initial render
-    render();
-  </script>
+tasks = data.tasks;
+setTasks(tasks);
+
+taskDateInput.value = todayISO();
+filterDateInput.value = todayISO();
+
+render();
+} catch (err) {
+alert("Could not read that file. Please import a valid JSON export.");
+} finally {
+e.target.value = "";
+}
+});
+
+render();
+});
