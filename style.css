@@ -1,5 +1,37 @@
 //this is a comment
 body {
+  <style>
+  /* When enabled, invert the whole dashboard area */
+  body.access-invert .invert-target,
+  body.access-invert .invert-target * {
+    filter: invert(100%) !important;
+  }
+
+  /* Dyslexic font toggle */
+  body.access-dyslexic {
+    font-family: "OpenDyslexic", "Dyslexie", "Lexend", "Atkinson Hyperlegible", Arial, sans-serif;
+  }
+
+  /* Optional: make controls look decent */
+  .accessibility-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .accessibility-controls button {
+    border-radius: 10px;
+    padding: 8px 12px;
+    border: 1px solid rgba(148,163,184,0.6);
+    background: rgba(148,163,184,0.12);
+    color: #e5e7eb;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .accessibility-controls button:hover {
+    background: rgba(148,163,184,0.20);
+  }
+</style>
   background-color: #88BDF2;
     
 }
