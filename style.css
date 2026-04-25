@@ -7,6 +7,8 @@ body.access-dyslexic {
 font-family: "OpenDyslexic", Arial, sans-serif;
 }
 
+<p id=>
+
 body {
 margin: 0;
 background-color: #ADE8F4;
@@ -195,6 +197,7 @@ flex-wrap: wrap;
 
 #Credits {
   text-align: center;
+  margin-left: 50px; 
   color: #000000; 
 }
 
