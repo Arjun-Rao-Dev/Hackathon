@@ -4,7 +4,7 @@ filter: invert(100%) !important;
 }
 
 body.access-dyslexic {
-font-family: "OpenDyslexic", "Dyslexie", "Lexend", "Atkinson Hyperlegible", Arial, sans-serif;
+font-family: "OpenDyslexic", Arial, sans-serif;
 }
 
 body {
