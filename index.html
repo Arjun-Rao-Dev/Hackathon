@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caregiver Task Tracker</title>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Family Caregiver Log</h1>
+        <p>Keep track of daily care for your loved ones.</p>
+    </header>
+
+    <!-- Entry Form -->
+    <section>
+        <h3>Log a New Activity</h3>
+        <form>
+            <label for="category">Category:</label>
+            <select id="category">
+                <option value="meds">Medication</option>
+                <option value="meal">Meal/Water</option>
+                <option value="appt">Appointment</option>
+                <option value="note">Note</option>
+            </select>
+
+            <br><br>
+
+            <label for="task">Description:</label>
+            <input type="text" id="task" placeholder="e.g. Lunch: Chicken and rice">
+
+            <br><br>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time">
+
+            <br><br>
+
+            <button type="button">Add to Daily Log</button>
+        </form>
+    </section>
+
+    <hr>
+
+    <!-- Task List Display -->
+    <section>
+        <h3>Today's Activities</h3>
+        <ul>
+            <li><strong>10:00 AM:</strong> Medication - Morning vitamins (Completed)</li>
+            <li><strong>12:30 PM:</strong> Meal - Turkey sandwich and water</li>
+            <li><strong>02:00 PM:</strong> Appointment - Physical Therapy</li>
+        </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Shared with: Mom, Dad, and Nurse Sarah</p>
+    </footer>
+
+</body>
+</html>
