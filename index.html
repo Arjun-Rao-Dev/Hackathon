@@ -1,58 +1,99 @@
 <!DOCTYPE html>
-<html>
-    <div class="accessibility-controls">
-  <button type="button" id="toggleInvertBtn">Invert colors</button>
-  <button type="button" id="toggleDyslexicBtn">Dyslexic font</button>
-</div>
+<html lang="en">
 <head>
-    <title>Caregiver Task Tracker</title>
-     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caregiver Task Tracker</title>
 </head>
+
 <body>
-    
-    <header>
-        <h1>Family Caregiver Log</h1>
-        <p>Keep track of daily care for your loved ones.</p>
+  <div class="container">
+    <header class="invert-target">
+      <div>
+        <h1>Caregiver Task Tracker</h1>
+        <p>Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
+      </div>
+
+      <div class="controls" aria-label="Accessibility controls">
+        <button class="btn" id="toggleInvert" type="button">Invert</button>
+        <button class="btn" id="toggleDyslexic" type="button">Dyslexic-friendly</button>
+        <button class="btn primary" id="exportBtn" type="button">Export</button>
+        <label style="margin: 0; display: inline-block;">
+          <span class="btn" style="display:inline-block;">Import</span>
+          <input id="importFile" type="file" accept="application/json" style="display:none;" />
+        </label>
+      </div>
     </header>
-    
-    <section>
-        <h3>Log a New Activity</h3>
-        <form>
-            <label for="category">Category:</label>
-            <select id="category">
-                <option value="meds">Medication</option>
-                <option value="meal">Meal/Water</option>
-                <option value="appt">Appointment</option>
-                <option value="note">Note</option>
-            </select>
 
-            <br><br>
+    <hr />
 
-            <label for="task">Description:</label>
-            <input type="text" id="task" placeholder="e.g. Lunch: Chicken and rice">
+    <div class="grid invert-target">
+      <!-- Left: Add task + list -->
+      <section class="card">
+        <h2>Add a task</h2>
 
-            <br><br>
+        <form id="taskForm">
+          <div class="row">
+            <div>
+              <label for="caregiverName">Caregiver name</label>
+              <input id="caregiverName" name="caregiverName" type="text" placeholder="e.g., Maria" required />
+            </div>
+            <div>
+              <label for="taskDate">Date</label>
+              <input id="taskDate" name="taskDate" type="date" required />
+            </div>
+          </div>
 
-            <label for="time">Time:</label>
-            <input type="time" id="time">
+          <label for="taskType">Task type</label>
+          <select id="taskType" name="taskType" required>
+            <option value="Medication">Medication</option>
+            <option value="Meal">Meal</option>
+            <option value="Appointment">Appointment</option>
+            <option value="Other">Other</option>
+          </select>
 
-            <br><br>
+          <label for="taskDetails">Details</label>
+          <textarea id="taskDetails" name="taskDetails" placeholder="e.g., Took morning pill with water. / Breakfast eaten / Dentist at 3pm."></textarea>
 
-            <button type="button">Add to Daily Log</button>
+          <div class="task-actions" style="justify-content:flex-start;">
+            <button class="btn primary" type="submit">Add task</button>
+            <button class="btn" type="button" id="clearDayBtn" title="Removes tasks for the currently selected day">Clear selected day</button>
+          </div>
         </form>
-    </section>
 
-    <hr>
+        <hr />
 
-    <section>
-        <h3>Today's Activities</h3>
+        <h3>Tasks</h3>
+        <p id="daySummary" style="margin-top:0;"></p>
+
+        <div class="task-list" id="taskList" aria-live="polite"></div>
+        <div class="footer-note">
+          Tip: Your data is saved in your browser (localStorage). Use Export/Import to move it.
+        </div>
+      </section>
+
+      <!-- Right: Summary -->
+      <aside class="card">
+        <h2>Quick summary</h2>
+
+        <label for="filterDate">View a specific day</label>
+        <input id="filterDate" type="date" />
+
+        <div style="margin-top:12px;">
+          <div class="meta" id="countsLine">—</div>
+        </div>
+
+        <hr />
+
+        <h3>How to use</h3>
         <ul>
-            <li><strong>10:00 AM:</strong> Medication - Morning vitamins (Completed)</li>
-            <li><strong>12:30 PM:</strong> Meal - Turkey sandwich and water</li>
-            <li><strong>02:00 PM:</strong> Appointment - Physical Therapy</li>
+          <li>Pick the date</li>
+          <li>Choose task type</li>
+          <li>Add details and caregiver name</li>
+          <li>Repeat for other family members</li>
         </ul>
-    </section>
-
+      </aside>
+    </div>
+  </div>
 </body>
 </html>
