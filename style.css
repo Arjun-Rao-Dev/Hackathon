@@ -1,38 +1,38 @@
 //this is a comment
 body {
-  background-color: rgb(#88BDF2)
+  background-color: #88BDF2;
     
 }
 p {
-  color: black;
+  font-color: #384959;
   font-family:serif;
   font-size: 24
 }
 h1 {
   font-weight: bold;
-  color: black;
+  color: #384959;
 }
 h2 {
   font-weight: 600;
-  color: black;
+  color: #384959;
 }
 h3 {
   font-weight: 600;
-  color: black;
+  color: #384959;
 }
 ol {
   font-weight: bold;
-  color: blue;
+  color: #384959;
   font-family: monospace;
 }
 ul {
   font-weight: bold;
-  color: blue;
+  color: #384959;
   font-family: monospace;
 }
 hr {
   font-weight: bold;
-  color: black;
+  color: #384959;
 }
 img {
   float: right;
