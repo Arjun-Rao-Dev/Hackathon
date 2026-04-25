@@ -1,15 +1,15 @@
 
  /* When enabled, invert the whole dashboard area */
- <style>
-body.access-invert .invert-target,
-body.access-invert .invert-target * {
-  filter: invert(100%) !important;
-}
+ //<style>
+//body.access-invert .invert-target,
+//body.access-invert .invert-target * {
+  //filter: invert(100%) !important;
+//}
 
-body.access-dyslexic {
-  font-family: "OpenDyslexic","Dyslexie","Lexend","Atkinson Hyperlegible", Arial, sans-serif;
-}
-</style>
+//body.access-dyslexic {
+  //font-family: "OpenDyslexic","Dyslexie","Lexend","Atkinson Hyperlegible", Arial, sans-serif;
+//}
+//</style>
 /* Base Styles */
 body {
   background-color: #ADE8F4;
