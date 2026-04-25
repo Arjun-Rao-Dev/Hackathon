@@ -10,6 +10,7 @@
 </head>
 
 <body>
+  
 <div class="container">
 <header class="invert-target">
 <div>
@@ -100,6 +101,27 @@ Import JSON
 </aside>
 </div>
 </div>
+
+  <!-- The Button -->
+<button onclick="readPage()">Read Page Aloud</button>
+
+<script>
+  function readPage() {
+    // 1. Get all visible text from the page body
+    const pageText = document.body.innerText;
+
+    // 2. Create the speech request
+    const utterance = new SpeechSynthesisUtterance(pageText);
+
+    // 3. Optional: Set a specific language or speed
+    utterance.lang = 'en-US';
+    utterance.rate = 1.0; // Normal speed
+
+    // 4. Start speaking
+    window.speechSynthesis.speak(utterance);
+  }
+</script>
+
 
 <script src="script.js"></script>
   <p id="Credits">
