@@ -1,1 +1,44 @@
+body {
+  background-color: rgb(193, 154, 107)
+    
+}
+p {
+  color: blue;
+  font-family:serif;
+  text-decoration-line:underline;
+  text-decoration-color: red;
+  text-decoration-style:solid;
+  
+  
+
+}
+h1 {
+  font-weight: bold;
+  color: blue;
+}
+h2 {
+  font-weight: bold;
+  color: blue;
+}
+h3 {
+  font-weight: bold;
+  color: blue;
+}
+ol {
+  font-weight: bold;
+  color: blue;
+  font-family: monospace;
+}
+ul {
+  font-weight: bold;
+  color: blue;
+  font-family: monospace;
+}
+hr {
+  font-weight: bold;
+  color: red;
+}
+img {
+  float: right;
+}
 
