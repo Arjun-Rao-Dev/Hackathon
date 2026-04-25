@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="https://cdn.jsdelivr.net/npm/opendyslexic@1.0.3/opendyslexic.css rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 <title>Caregiver Task Tracker</title>
 </head>
@@ -14,13 +13,20 @@
 <div class="container">
 <header class="invert-target">
 <div>
-<h1>Caregiver Task Tracker</h1>
-<p>Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
+<h1 data-i18n="appTitle">Caregiver Task Tracker</h1>
+<p data-i18n="appSubtitle">Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
 </div>
 
 <div class="controls">
-<button class="btn" type="button" id="toggleInvert">Invert Colors</button>
-<button class="btn" type="button" id="toggleDyslexic">Dyslexic Font</button>
+<label class="language-control" for="languageSelect" data-i18n="languageLabel">Language</label>
+<select class="language-select" id="languageSelect" aria-label="Language">
+<option value="en">English</option>
+<option value="zh">简体中文</option>
+<option value="es">Español</option>
+<option value="hi">हिन्दी</option>
+</select>
+<button class="btn" type="button" id="toggleInvert" data-i18n="invertColors">Invert Colors</button>
+<button class="btn" type="button" id="toggleDyslexic" data-i18n="dyslexicFont">Dyslexic Font</button>
 </div>
 </header>
 
@@ -28,49 +34,49 @@
 
 <div class="grid invert-target">
 <section class="card">
-<h2>Add a task</h2>
+<h2 data-i18n="addTaskHeading">Add a task</h2>
 
 <form id="taskForm">
 <div class="row">
 <div>
-<label for="caregiverName">Caregiver name</label>
-<input id="caregiverName" name="caregiverName" type="text" placeholder="e.g., Maria" required />
+<label for="caregiverName" data-i18n="caregiverNameLabel">Caregiver name</label>
+<input id="caregiverName" name="caregiverName" type="text" placeholder="e.g., Maria" data-i18n-placeholder="caregiverPlaceholder" required />
 </div>
 
 <div>
-<label for="taskDate">Date</label>
+<label for="taskDate" data-i18n="dateLabel">Date</label>
 <input id="taskDate" name="taskDate" type="date" required />
 </div>
 </div>
 
-<label for="taskType">Task type</label>
+<label for="taskType" data-i18n="taskTypeLabel">Task type</label>
 <select id="taskType" name="taskType" required>
-<option value="Medication">Medication</option>
-<option value="Meal">Meal</option>
-<option value="Appointment">Appointment</option>
-<option value="Other">Other</option>
+<option value="Medication" data-i18n="typeMedication">Medication</option>
+<option value="Meal" data-i18n="typeMeal">Meal</option>
+<option value="Appointment" data-i18n="typeAppointment">Appointment</option>
+<option value="Other" data-i18n="typeOther">Other</option>
 </select>
 
-<label for="taskDetails">Details</label>
-<textarea id="taskDetails" name="taskDetails" placeholder="e.g., Took morning pill with water. / Breakfast eaten / Dentist at 3pm."></textarea>
+<label for="taskDetails" data-i18n="detailsLabel">Details</label>
+<textarea id="taskDetails" name="taskDetails" placeholder="e.g., Took morning pill with water. / Breakfast eaten / Dentist at 3pm." data-i18n-placeholder="detailsPlaceholder"></textarea>
 
 <div class="task-actions" style="justify-content: flex-start;">
-<button class="btn primary" type="submit">Add task</button>
-<button class="btn" type="button" id="clearDayBtn">Clear selected day</button>
+<button class="btn primary" type="submit" data-i18n="addTaskButton">Add task</button>
+<button class="btn" type="button" id="clearDayBtn" data-i18n="clearDayButton">Clear selected day</button>
 </div>
 </form>
 
 <hr />
 
-<h2>Tasks</h2>
+<h2 data-i18n="tasksHeading">Tasks</h2>
 <p id="daySummary">—</p>
 <div id="taskList" class="task-list"></div>
 </section>
 
 <aside class="card">
-<h2>Quick summary</h2>
+<h2 data-i18n="quickSummaryHeading">Quick summary</h2>
 
-<label for="filterDate">View a specific day</label>
+<label for="filterDate" data-i18n="viewDayLabel">View a specific day</label>
 <input id="filterDate" type="date" />
 
 <div style="margin-top: 12px;">
@@ -79,52 +85,33 @@
 
 <hr />
 
-<h3>Backup</h3>
+<h3 data-i18n="backupHeading">Backup</h3>
 <div class="controls" style="justify-content: flex-start;">
-<button class="btn" type="button" id="exportBtn">Export JSON</button>
+<button class="btn" type="button" id="exportBtn" data-i18n="exportJson">Export JSON</button>
 
 <label class="btn" for="importFile" style="display: inline-block; margin: 0;">
-Import JSON
+<span data-i18n="importJson">Import JSON</span>
 </label>
 <input id="importFile" type="file" accept="application/json" style="display: none;" />
 </div>
 
 <hr />
 
-<h3>How to use</h3>
+<h3 data-i18n="howToUseHeading">How to use</h3>
 <ul>
-<li>Pick the date</li>
-<li>Choose task type</li>
-<li>Add details and caregiver name</li>
-<li>Repeat for other family members</li>
+<li data-i18n="howToPickDate">Pick the date</li>
+<li data-i18n="howToChooseType">Choose task type</li>
+<li data-i18n="howToAddDetails">Add details and caregiver name</li>
+<li data-i18n="howToRepeat">Repeat for other family members</li>
 </ul>
 </aside>
 </div>
 </div>
 
-  <!-- The Button -->
-<button id="pagereader" onclick="readPage()" id="pagereader">Read Page Aloud</button>
-
-<script>
-  function readPage() {
-    // 1. Get all visible text from the page body
-    const pageText = document.body.innerText;
-
-    // 2. Create the speech request
-    const utterance = new SpeechSynthesisUtterance(pageText);
-
-    // 3. Optional: Set a specific language or speed
-    utterance.lang = 'en-US';
-    utterance.rate = 1.0; // Normal speed
-
-    // 4. Start speaking
-    window.speechSynthesis.speak(utterance);
-  }
-</script>
-
+<button class="btn reader-button" id="pagereader" type="button" data-i18n="readPageAloud">Read Page Aloud</button>
 
 <script src="script.js"></script>
-  <p id="Credits">
+<p id="Credits" data-i18n="credits">
   This app was made by Arjun Rao, Vedha Sriram, Kavin Sriram, and Samanyu Bellapu.
 </p>
 </body>

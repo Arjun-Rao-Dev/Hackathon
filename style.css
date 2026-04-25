@@ -1,3 +1,10 @@
+@font-face {
+font-family: "OpenDyslexic";
+src: url("open_dyslexic/OpenDyslexic-Regular.otf") format("opentype");
+font-weight: 400;
+font-style: normal;
+}
+
 body.access-invert .invert-target,
 body.access-invert .invert-target * {
 filter: invert(100%) !important;
@@ -89,7 +96,19 @@ display: flex;
 gap: 10px;
 flex-wrap: wrap;
 justify-content: flex-end;
+align-items: center;
 margin-top: 4px;
+}
+
+.language-control {
+margin: 0;
+font-weight: 800;
+}
+
+.language-select {
+width: auto;
+min-width: 150px;
+max-width: 100%;
 }
 
 .btn {
@@ -197,7 +216,7 @@ flex-wrap: wrap;
 
 #Credits {
   text-align: center;
-  margin-left: 50px; 
+  margin: 12px 16px 20px;
   color: #000000; 
 }
 
@@ -227,6 +246,11 @@ font-size: 14px;
 opacity: 0.9;
 margin-top: 12px;
 font-weight: 700;
+}
+
+.reader-button {
+display: block;
+margin: 16px auto 0;
 }
 
 :focus-visible {
@@ -259,4 +283,13 @@ grid-template-columns: 1fr;
 #pagereader:focus {
   outline: 3px solid #ffcc00;
   outline-offset: 2px;
+}
+
+.controls {
+justify-content: flex-start;
+}
+
+.language-select {
+width: 100%;
+}
 }
