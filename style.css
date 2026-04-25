@@ -1,28 +1,24 @@
+//this is a comment
 body {
-  background-color: rgb(193, 154, 107)
+  background-color: rgb(#88BDF2)
     
 }
 p {
-  color: blue;
+  color: black;
   font-family:serif;
-  text-decoration-line:underline;
-  text-decoration-color: red;
-  text-decoration-style:solid;
-  
-  
-
+  font-size: 24
 }
 h1 {
   font-weight: bold;
-  color: blue;
+  color: black;
 }
 h2 {
-  font-weight: bold;
-  color: blue;
+  font-weight: 600;
+  color: black;
 }
 h3 {
-  font-weight: bold;
-  color: blue;
+  font-weight: 600;
+  color: black;
 }
 ol {
   font-weight: bold;
@@ -36,7 +32,7 @@ ul {
 }
 hr {
   font-weight: bold;
-  color: red;
+  color: black;
 }
 img {
   float: right;
