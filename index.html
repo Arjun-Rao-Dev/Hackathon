@@ -15,16 +15,7 @@
         <h1>Caregiver Task Tracker</h1>
         <p>Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
       </div>
-
-      <div class="controls" aria-label="Accessibility controls">
-        <button class="btn" id="toggleInvert" type="button">Invert</button>
-        <button class="btn" id="toggleDyslexic" type="button">Dyslexic-friendly</button>
-        <button class="btn primary" id="exportBtn" type="button">Export</button>
-        <label style="margin: 0; display: inline-block;">
-          <span class="btn" style="display:inline-block;">Import</span>
-          <input id="importFile" type="file" accept="application/json" style="display:none;" />
-        </label>
-      </div>
+      
     </header>
 
     <hr />
@@ -68,10 +59,6 @@
         <h3>Tasks</h3>
         <p id="daySummary" style="margin-top:0;"></p>
 
-        <div class="task-list" id="taskList" aria-live="polite"></div>
-        <div class="footer-note">
-          Tip: Your data is saved in your browser (localStorage). Use Export/Import to move it.
-        </div>
       </section>
 
       <!-- Right: Summary -->
