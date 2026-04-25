@@ -1,5 +1,4 @@
 <style>
-    /* When enabled, invert the whole dashboard area */
     body.access-invert .invert-target,
     body.access-invert .invert-target * {
       filter: invert(100%) !important;
