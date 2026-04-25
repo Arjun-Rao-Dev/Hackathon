@@ -218,3 +218,23 @@ e.target.value = "";
 
 render();
 });
+
+function readPage() {
+  // 1. Get visible text and trim whitespace
+  const pageText = document.body.innerText.trim();
+
+  // 2. CHECK: If the page is empty, don't try to speak
+  if (pageText === "") {
+    console.warn("No words found on the page to read.");
+    alert("There are no words on this page to read!");
+    return; // Stop the function here
+  }
+
+  // 3. Optional: Stop any current speech before starting new speech
+  window.speechSynthesis.cancel();
+
+  // 4. Create and speak the utterance
+  const utterance = new SpeechSynthesisUtterance(pageText);
+  window.speechSynthesis.speak(utterance);
+}
+
