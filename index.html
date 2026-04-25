@@ -1,85 +1,110 @@
+
+PlayX Admin
+12:17 PM (2 minutes ago)
+to me
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="script.js"></script>
-   <link rel="stylesheet" href="style.css"/>
-  <title>Caregiver Task Tracker</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="stylesheet" href="style.css" />
+<title>Caregiver Task Tracker</title>
 </head>
 
 <body>
-  <div class="container">
-    <header class="invert-target">
-      <div>
-        <h1>Caregiver Task Tracker</h1>
-        <p>Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
-      </div>
-      
-    </header>
+<div class="container">
+<header class="invert-target">
+<div>
+<h1>Caregiver Task Tracker</h1>
+<p>Log daily tasks for your elderly relative: medications, meals, and appointments.</p>
+</div>
 
-    <hr />
+<div class="controls">
+<button class="btn" type="button" id="toggleInvert">Invert Colors</button>
+<button class="btn" type="button" id="toggleDyslexic">Dyslexic Font</button>
+</div>
+</header>
 
-    <div class="grid invert-target">
-      <!-- Left: Add task + list -->
-      <section class="card">
-        <h2>Add a task</h2>
+<hr />
 
-        <form id="taskForm">
-          <div class="row">
-            <div>
-              <label for="caregiverName">Caregiver name</label>
-              <input id="caregiverName" name="caregiverName" type="text" placeholder="e.g., Maria" required />
-            </div>
-            <div>
-              <label for="taskDate">Date</label>
-              <input id="taskDate" name="taskDate" type="date" required />
-            </div>
-          </div>
+<div class="grid invert-target">
+<section class="card">
+<h2>Add a task</h2>
 
-          <label for="taskType">Task type</label>
-          <select id="taskType" name="taskType" required>
-            <option value="Medication">Medication</option>
-            <option value="Meal">Meal</option>
-            <option value="Appointment">Appointment</option>
-            <option value="Other">Other</option>
-          </select>
+<form id="taskForm">
+<div class="row">
+<div>
+<label for="caregiverName">Caregiver name</label>
+<input id="caregiverName" name="caregiverName" type="text" placeholder="e.g., Maria" required />
+</div>
 
-          <label for="taskDetails">Details</label>
-          <textarea id="taskDetails" name="taskDetails" placeholder="e.g., Took morning pill with water. / Breakfast eaten / Dentist at 3pm."></textarea>
+<div>
+<label for="taskDate">Date</label>
+<input id="taskDate" name="taskDate" type="date" required />
+</div>
+</div>
 
-          <div class="task-actions" style="justify-content:flex-start;">
-            <button class="btn primary" type="submit">Add task</button>
-            <button class="btn" type="button" id="clearDayBtn" title="Removes tasks for the currently selected day">Clear selected day</button>
-          </div>
-        </form>
+<label for="taskType">Task type</label>
+<select id="taskType" name="taskType" required>
+<option value="Medication">Medication</option>
+<option value="Meal">Meal</option>
+<option value="Appointment">Appointment</option>
+<option value="Other">Other</option>
+</select>
 
-        <hr/>
+<label for="taskDetails">Details</label>
+<textarea id="taskDetails" name="taskDetails" placeholder="e.g., Took morning pill with water. / Breakfast eaten / Dentist at 3pm."></textarea>
 
-      </section>
+<div class="task-actions" style="justify-content: flex-start;">
+<button class="btn primary" type="submit">Add task</button>
+<button class="btn" type="button" id="clearDayBtn">Clear selected day</button>
+</div>
+</form>
 
-      <!-- Right: Summary -->
-      <aside class="card">
-        <h2>Quick summary</h2>
+<hr />
 
-        <label for="filterDate">View a specific day</label>
-        <input id="filterDate" type="date" />
+<h2>Tasks</h2>
+<p id="daySummary">—</p>
+<div id="taskList" class="task-list"></div>
+</section>
 
-        <div style="margin-top:12px;">
-          <div class="meta" id="countsLine">—</div>
-        </div>
+<aside class="card">
+<h2>Quick summary</h2>
 
-        <hr />
+<label for="filterDate">View a specific day</label>
+<input id="filterDate" type="date" />
 
-        <h3>How to use</h3>
-        <ul>
-          <li>Pick the date</li>
-          <li>Choose task type</li>
-          <li>Add details and caregiver name</li>
-          <li>Repeat for other family members</li>
-        </ul>
-      </aside>
-    </div>
-  </div>
+<div style="margin-top: 12px;">
+<div class="meta" id="countsLine">—</div>
+</div>
+
+<hr />
+
+<h3>Backup</h3>
+<div class="controls" style="justify-content: flex-start;">
+<button class="btn" type="button" id="exportBtn">Export JSON</button>
+
+<label class="btn" for="importFile" style="display: inline-block; margin: 0;">
+Import JSON
+</label>
+<input id="importFile" type="file" accept="application/json" style="display: none;" />
+</div>
+
+<hr />
+
+<h3>How to use</h3>
+<ul>
+<li>Pick the date</li>
+<li>Choose task type</li>
+<li>Add details and caregiver name</li>
+<li>Repeat for other family members</li>
+</ul>
+</aside>
+</div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
