@@ -192,9 +192,11 @@ gap: 10px;
 justify-content: flex-end;
 flex-wrap: wrap;
 }
-#Credits{
+
+#Credits {
   text-align: center;
-   color: #000000
+  color: #000000; 
+}
 }
 .link-btn {
 border: 2px solid rgba(56, 73, 89, 0.25);
