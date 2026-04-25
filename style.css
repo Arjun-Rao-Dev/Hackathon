@@ -31,10 +31,11 @@ body {
   .accessibility-controls button:hover {
     background: rgba(148,163,184,0.20);
   }
+  
+<style>
+  body { background-color: #88BDF2; }
 </style>
-  background-color: #88BDF2;
-    
-}
+
 p {
   font-color: #384959;
   font-family:serif;
