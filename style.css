@@ -244,4 +244,19 @@ grid-template-columns: 1fr;
 .row {
 grid-template-columns: 1fr;
 }
+.pagereader {
+  background-color: #003366;
+  color: #ffffff;
+  border: 2px solid #003366;
+  min-height: 48px;
+  min-width: 100px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  forced-color-adjust: auto;
+}
+.pagereader:focus {
+  outline: 3px solid #ffcc00;
+  outline-offset: 2px;
 }
