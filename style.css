@@ -27,11 +27,13 @@ h1 {
 h2, h3 {
   font-weight: 600;
   color: #384959;
+ font-size: 30px;
 }
 ol, ul {
   font-weight: bold;
   color: #384959;
   font-family: monospace;
+ font-size: 25px;
 }
 hr {
   border: 0;
