@@ -669,6 +669,6 @@ window.speechSynthesis.cancel();
 
 const utterance = new SpeechSynthesisUtterance(pageText);
 utterance.lang = t("speechLang");
-utterance.rate = 1.0;
+utterance.rate = 0.75;
 window.speechSynthesis.speak(utterance);
 }
