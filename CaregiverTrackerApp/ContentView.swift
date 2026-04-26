@@ -1,4 +1,23 @@
 import SwiftUI
+import UniformTypeIdentifiers
+
+struct BackupDocument: FileDocument {
+    static var readableContentTypes: [UTType] { [.json] }
+
+    var data: Data
+
+    init(data: Data = Data()) {
+        self.data = data
+    }
+
+    init(configuration: ReadConfiguration) throws {
+        data = configuration.file.regularFileContents ?? Data()
+    }
+
+    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+        FileWrapper(regularFileWithContents: data)
+    }
+}
 
 struct ContentView: View {
     @State private var store = TaskStore()
@@ -12,6 +31,13 @@ struct ContentView: View {
     @State private var details = ""
     @State private var filterDate = Date()
     @State private var speaker = PageSpeaker()
+    @State private var invertColors = false
+    @State private var dyslexicFont = false
+    @State private var backupDocument = BackupDocument()
+    @State private var isExportingBackup = false
+    @State private var isImportingBackup = false
+    @State private var backupMessage = ""
+    @State private var showsBackupMessage = false
 
     private var language: AppLanguage {
         AppLanguage(rawValue: languageCode) ?? .english
@@ -80,6 +106,9 @@ struct ContentView: View {
                 }
 
                 Section(text("accessibility")) {
+                    Toggle(text("invertColors"), isOn: $invertColors)
+                    Toggle(text("dyslexicFont"), isOn: $dyslexicFont)
+
                     Button(text("readPageAloud")) {
                         speaker.speak(readAloudText, language: language)
                     }
@@ -87,6 +116,22 @@ struct ContentView: View {
                     Text(text("readPageHelp"))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                }
+
+                Section(text("backup")) {
+                    Button(text("exportJson")) {
+                        exportBackup()
+                    }
+
+                    Button(text("importJson")) {
+                        isImportingBackup = true
+                    }
+                }
+
+                Section(text("howToUse")) {
+                    ForEach(howToUseLines, id: \.self) { line in
+                        Label(line, systemImage: "checkmark.circle")
+                    }
                 }
 
                 Section(text("tasks")) {
@@ -103,6 +148,27 @@ struct ContentView: View {
                 }
             }
             .navigationTitle(text("appTitle"))
+        }
+        .font(dyslexicFont ? .custom("OpenDyslexic", size: 17) : .body)
+        .modifier(InvertColorsModifier(active: invertColors))
+        .fileExporter(
+            isPresented: $isExportingBackup,
+            document: backupDocument,
+            contentType: .json,
+            defaultFilename: "caregiver-task-tracker-export"
+        ) { result in
+            handleExportResult(result)
+        }
+        .fileImporter(
+            isPresented: $isImportingBackup,
+            allowedContentTypes: [.json]
+        ) { result in
+            handleImportResult(result)
+        }
+        .alert(text("backup"), isPresented: $showsBackupMessage) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(backupMessage)
         }
     }
 
@@ -128,6 +194,15 @@ struct ContentView: View {
         }
 
         return lines.joined(separator: ". ")
+    }
+
+    private var howToUseLines: [String] {
+        [
+            text("howToPickDate"),
+            text("howToChooseType"),
+            text("howToAddDetails"),
+            text("howToRepeat")
+        ]
     }
 
     private func readAloudDescription(for task: CareTask) -> String {
@@ -177,6 +252,59 @@ struct ContentView: View {
 
     private func label(for kind: TaskKind) -> String {
         Strings.value(kind.rawValue, language: language)
+    }
+
+    private func exportBackup() {
+        do {
+            backupDocument = BackupDocument(data: try store.exportData())
+            isExportingBackup = true
+        } catch {
+            showBackupMessage(text("exportFailed"))
+        }
+    }
+
+    private func handleExportResult(_ result: Result<URL, Error>) {
+        switch result {
+        case .success:
+            showBackupMessage(text("exportComplete"))
+        case .failure:
+            showBackupMessage(text("exportFailed"))
+        }
+    }
+
+    private func handleImportResult(_ result: Result<URL, Error>) {
+        do {
+            let url = try result.get()
+            let canAccess = url.startAccessingSecurityScopedResource()
+            defer {
+                if canAccess {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+
+            try store.importData(Data(contentsOf: url))
+            filterDate = Date()
+            showBackupMessage(text("importComplete"))
+        } catch {
+            showBackupMessage(text("importFailed"))
+        }
+    }
+
+    private func showBackupMessage(_ message: String) {
+        backupMessage = message
+        showsBackupMessage = true
+    }
+}
+
+private struct InvertColorsModifier: ViewModifier {
+    let active: Bool
+
+    func body(content: Content) -> some View {
+        if active {
+            content.colorInvert()
+        } else {
+            content
+        }
     }
 }
 
@@ -235,8 +363,22 @@ enum Strings {
             "enableReminders": "Enable reminders",
             "nativeReminderHelp": "iOS notifications can still appear when the app is closed after permission is granted.",
             "accessibility": "Accessibility",
+            "invertColors": "Invert Colors",
+            "dyslexicFont": "Dyslexic Font",
             "readPageAloud": "Read page aloud",
             "readPageHelp": "Reads the current summary and task list slowly.",
+            "backup": "Backup",
+            "exportJson": "Export JSON",
+            "importJson": "Import JSON",
+            "exportComplete": "Export complete.",
+            "exportFailed": "Could not export tasks.",
+            "importComplete": "Import complete.",
+            "importFailed": "Could not import that JSON file.",
+            "howToUse": "How to use",
+            "howToPickDate": "Pick the date",
+            "howToChooseType": "Choose task type",
+            "howToAddDetails": "Add details and caregiver name",
+            "howToRepeat": "Repeat for other family members",
             "tasks": "Tasks",
             "noTasks": "No tasks logged for this day yet.",
             "delete": "Delete",
@@ -263,8 +405,22 @@ enum Strings {
             "enableReminders": "启用提醒",
             "nativeReminderHelp": "授予权限后，即使应用关闭，iOS 通知也可以显示。",
             "accessibility": "辅助功能",
+            "invertColors": "反转颜色",
+            "dyslexicFont": "阅读障碍字体",
             "readPageAloud": "朗读页面",
             "readPageHelp": "慢速朗读当前摘要和任务列表。",
+            "backup": "备份",
+            "exportJson": "导出 JSON",
+            "importJson": "导入 JSON",
+            "exportComplete": "导出完成。",
+            "exportFailed": "无法导出任务。",
+            "importComplete": "导入完成。",
+            "importFailed": "无法导入该 JSON 文件。",
+            "howToUse": "使用方法",
+            "howToPickDate": "选择日期",
+            "howToChooseType": "选择任务类型",
+            "howToAddDetails": "添加详细信息和护理人员姓名",
+            "howToRepeat": "为其他家庭成员重复",
             "tasks": "任务",
             "noTasks": "这一天还没有记录任务。",
             "delete": "删除",
@@ -291,8 +447,22 @@ enum Strings {
             "enableReminders": "Activar recordatorios",
             "nativeReminderHelp": "Las notificaciones de iOS pueden aparecer aunque la app este cerrada despues de dar permiso.",
             "accessibility": "Accesibilidad",
+            "invertColors": "Invertir colores",
+            "dyslexicFont": "Fuente dislexica",
             "readPageAloud": "Leer pagina en voz alta",
             "readPageHelp": "Lee lentamente el resumen actual y la lista de tareas.",
+            "backup": "Copia de seguridad",
+            "exportJson": "Exportar JSON",
+            "importJson": "Importar JSON",
+            "exportComplete": "Exportacion completa.",
+            "exportFailed": "No se pudieron exportar las tareas.",
+            "importComplete": "Importacion completa.",
+            "importFailed": "No se pudo importar ese archivo JSON.",
+            "howToUse": "Como usar",
+            "howToPickDate": "Elige la fecha",
+            "howToChooseType": "Elige el tipo de tarea",
+            "howToAddDetails": "Agrega detalles y nombre del cuidador",
+            "howToRepeat": "Repite para otros familiares",
             "tasks": "Tareas",
             "noTasks": "Todavia no hay tareas registradas para este dia.",
             "delete": "Eliminar",
@@ -319,8 +489,22 @@ enum Strings {
             "enableReminders": "रिमाइंडर चालू करें",
             "nativeReminderHelp": "अनुमति मिलने के बाद ऐप बंद होने पर भी iOS सूचनाएं दिख सकती हैं।",
             "accessibility": "सुलभता",
+            "invertColors": "रंग उलटें",
+            "dyslexicFont": "डिस्लेक्सिक फ़ॉन्ट",
             "readPageAloud": "पेज ज़ोर से पढ़ें",
             "readPageHelp": "मौजूदा सारांश और कार्य सूची को धीरे-धीरे पढ़ता है।",
+            "backup": "बैकअप",
+            "exportJson": "JSON निर्यात करें",
+            "importJson": "JSON आयात करें",
+            "exportComplete": "निर्यात पूरा हुआ।",
+            "exportFailed": "कार्य निर्यात नहीं किए जा सके।",
+            "importComplete": "आयात पूरा हुआ।",
+            "importFailed": "वह JSON फ़ाइल आयात नहीं की जा सकी।",
+            "howToUse": "कैसे उपयोग करें",
+            "howToPickDate": "तारीख चुनें",
+            "howToChooseType": "कार्य प्रकार चुनें",
+            "howToAddDetails": "विवरण और देखभालकर्ता का नाम जोड़ें",
+            "howToRepeat": "परिवार के अन्य सदस्यों के लिए दोहराएं",
             "tasks": "कार्य",
             "noTasks": "इस दिन के लिए अभी कोई कार्य दर्ज नहीं है।",
             "delete": "हटाएं",

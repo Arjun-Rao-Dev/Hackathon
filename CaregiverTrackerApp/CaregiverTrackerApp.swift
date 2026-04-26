@@ -1,9 +1,14 @@
 import SwiftUI
 import UserNotifications
 import AVFoundation
+import CoreText
 
 @main
 struct CaregiverTrackerApp: App {
+    init() {
+        FontRegistrar.registerOpenDyslexic()
+    }
+
     var body: some Scene {
         WindowGroup {
             ContentView()
@@ -65,6 +70,16 @@ final class PageSpeaker {
     }
 }
 
+enum FontRegistrar {
+    static func registerOpenDyslexic() {
+        guard let url = Bundle.main.url(forResource: "OpenDyslexic-Regular", withExtension: "otf") else {
+            return
+        }
+
+        CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+    }
+}
+
 struct CareTask: Identifiable, Codable, Equatable {
     var id = UUID()
     var caregiver: String
@@ -73,6 +88,12 @@ struct CareTask: Identifiable, Codable, Equatable {
     var kind: TaskKind
     var details: String
     var createdAt = Date()
+}
+
+struct TaskBackup: Codable {
+    var version: Int
+    var exportedAt: Date
+    var tasks: [CareTask]
 }
 
 @Observable
@@ -131,6 +152,21 @@ final class TaskStore {
             guard granted else { return }
             self?.tasks.forEach { self?.scheduleNotification(for: $0) }
         }
+    }
+
+    func exportData() throws -> Data {
+        let backup = TaskBackup(version: 1, exportedAt: Date(), tasks: tasks)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return try encoder.encode(backup)
+    }
+
+    func importData(_ data: Data) throws {
+        let decoder = JSONDecoder()
+        let backup = try decoder.decode(TaskBackup.self, from: data)
+        tasks = backup.tasks
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        tasks.forEach { scheduleNotification(for: $0) }
     }
 
     private func scheduleNotification(for task: CareTask) {

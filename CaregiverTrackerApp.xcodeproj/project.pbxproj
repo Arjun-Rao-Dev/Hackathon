@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		DB6330817A9C488BAD27C077 /* CaregiverTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C823E02C70949F1B2FFB9D0 /* CaregiverTrackerApp.swift */; };
 		C48655D7F1A14F18B9BFCE92 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E013953E426242DA84717E33 /* ContentView.swift */; };
+		5C14545C9BD34553AA40908D /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1C823E02C70949F1B2FFB9D0 /* CaregiverTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaregiverTrackerApp.swift; sourceTree = "<group>"; };
 		E013953E426242DA84717E33 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open_dyslexic/OpenDyslexic-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		B3870A0A6ECB4B75BAB40CEA /* CaregiverTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaregiverTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -32,6 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				35D9BC6363F14FE6942F624A /* CaregiverTrackerApp */,
+				45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */,
 				7CB5C3FA49464604A125F09D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,6 +65,7 @@
 			buildPhases = (
 				F3F877CA953445948CA47BD4 /* Sources */,
 				42285825B0B94641B9EC3EB7 /* Frameworks */,
+				2810F47264D54A979A3400D0 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -104,6 +108,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2810F47264D54A979A3400D0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C14545C9BD34553AA40908D /* OpenDyslexic-Regular.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F3F877CA953445948CA47BD4 /* Sources */ = {
