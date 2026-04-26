@@ -1,6 +1,16 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+private enum AppTheme {
+    static let pageBackground = Color(red: 0.68, green: 0.91, blue: 0.94)
+    static let panelBackground = Color(red: 0.90, green: 0.97, blue: 0.99)
+    static let fieldBackground = Color(red: 0.98, green: 0.995, blue: 1.0)
+    static let text = Color(red: 0.22, green: 0.29, blue: 0.35)
+    static let border = Color(red: 0.54, green: 0.62, blue: 0.68).opacity(0.55)
+    static let accent = Color(red: 0.18, green: 0.43, blue: 0.58)
+    static let destructive = Color(red: 0.49, green: 0.18, blue: 0.20)
+}
+
 struct BackupDocument: FileDocument {
     static var readableContentTypes: [UTType] { [.json] }
 
@@ -57,6 +67,7 @@ struct ContentView: View {
                         }
                     }
                 }
+                .modifier(BlueListRowStyle())
 
                 Section(text("addTask")) {
                     TextField(text("caregiverName"), text: $caregiver)
@@ -82,28 +93,37 @@ struct ContentView: View {
                     Button(text("addTask")) {
                         addTask()
                     }
+                    .buttonStyle(BlueBorderedButtonStyle(prominent: true))
                     .disabled(caregiver.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
 
                     Button(text("clearSelectedDay"), role: .destructive) {
                         store.clearDay(filterDate)
                     }
+                    .buttonStyle(BlueBorderedButtonStyle())
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("quickSummary")) {
                     DatePicker(text("viewDay"), selection: $filterDate, displayedComponents: .date)
                     Text(summaryText)
                         .font(.subheadline.weight(.semibold))
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("reminders")) {
                     Button(text("enableReminders")) {
                         store.requestNotifications()
                     }
+                    .buttonStyle(BlueBorderedButtonStyle())
 
                     Text(text("nativeReminderHelp"))
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.text.opacity(0.75))
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("accessibility")) {
                     Toggle(text("invertColors"), isOn: $invertColors)
@@ -112,32 +132,42 @@ struct ContentView: View {
                     Button(text("readPageAloud")) {
                         speaker.speak(readAloudText, language: language)
                     }
+                    .buttonStyle(BlueBorderedButtonStyle())
 
                     Text(text("readPageHelp"))
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.text.opacity(0.75))
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("backup")) {
                     Button(text("exportJson")) {
                         exportBackup()
                     }
+                    .buttonStyle(BlueBorderedButtonStyle())
 
                     Button(text("importJson")) {
                         isImportingBackup = true
                     }
+                    .buttonStyle(BlueBorderedButtonStyle())
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("howToUse")) {
                     ForEach(howToUseLines, id: \.self) { line in
                         Label(line, systemImage: "checkmark.circle")
+                            .foregroundStyle(AppTheme.text)
                     }
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
 
                 Section(text("tasks")) {
                     if dayTasks.isEmpty {
                         Text(text("noTasks"))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppTheme.text.opacity(0.75))
                     } else {
                         ForEach(dayTasks) { task in
                             TaskRow(task: task, language: language) {
@@ -146,10 +176,21 @@ struct ContentView: View {
                         }
                     }
                 }
+                .modifier(BlueListRowStyle())
+                .headerProminence(.increased)
             }
+            .scrollContentBackground(.hidden)
+            .background(AppTheme.pageBackground)
+            .listRowSeparatorTint(AppTheme.border)
+            .listSectionSpacing(18)
             .navigationTitle(text("appTitle"))
+            .toolbarBackground(AppTheme.pageBackground, for: .navigationBar)
+            .toolbarColorScheme(.light, for: .navigationBar)
         }
         .font(dyslexicFont ? .custom("OpenDyslexic", size: 17) : .body)
+        .foregroundStyle(AppTheme.text)
+        .tint(AppTheme.accent)
+        .background(AppTheme.pageBackground)
         .modifier(InvertColorsModifier(active: invertColors))
         .fileExporter(
             isPresented: $isExportingBackup,
@@ -296,6 +337,34 @@ struct ContentView: View {
     }
 }
 
+private struct BlueBorderedButtonStyle: ButtonStyle {
+    var prominent = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline.weight(.bold))
+            .foregroundStyle(AppTheme.text)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .background(prominent ? AppTheme.fieldBackground : AppTheme.panelBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(AppTheme.border, lineWidth: 2)
+            }
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+    }
+}
+
+private struct BlueListRowStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .listRowBackground(AppTheme.panelBackground)
+            .listRowSeparatorTint(AppTheme.border)
+            .foregroundStyle(AppTheme.text)
+    }
+}
+
 private struct InvertColorsModifier: ViewModifier {
     let active: Bool
 
@@ -317,23 +386,34 @@ private struct TaskRow: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(Strings.value(task.kind.rawValue, language: language))
-                    .font(.headline)
+                    .font(.headline.weight(.bold))
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 10)
+                    .background(AppTheme.fieldBackground)
+                    .clipShape(Capsule())
+                    .overlay {
+                        Capsule()
+                            .stroke(AppTheme.border, lineWidth: 2)
+                    }
                 Spacer()
                 Button(Strings.value("delete", language: language), role: .destructive, action: onDelete)
-                    .buttonStyle(.borderless)
+                    .buttonStyle(BlueBorderedButtonStyle())
             }
 
             Text(task.caregiver)
                 .font(.subheadline.weight(.semibold))
+                .foregroundStyle(AppTheme.text)
 
             if let dueTime = task.dueTime {
                 Text("\(Strings.value("dueAt", language: language)) \(dueTime.formatted(date: .omitted, time: .shortened))")
-                    .font(.subheadline)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppTheme.text)
             }
 
             if !task.details.isEmpty {
                 Text(task.details)
                     .font(.body)
+                    .foregroundStyle(AppTheme.text)
             }
         }
         .padding(.vertical, 4)

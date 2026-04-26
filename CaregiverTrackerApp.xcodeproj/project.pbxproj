@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB6330817A9C488BAD27C077 /* CaregiverTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C823E02C70949F1B2FFB9D0 /* CaregiverTrackerApp.swift */; };
+		5C14545C9BD34553AA40908D /* open_dyslexic/OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 45A875B6087942BAA3484205 /* open_dyslexic/OpenDyslexic-Regular.otf */; };
 		C48655D7F1A14F18B9BFCE92 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E013953E426242DA84717E33 /* ContentView.swift */; };
-		5C14545C9BD34553AA40908D /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */; };
+		DB6330817A9C488BAD27C077 /* CaregiverTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C823E02C70949F1B2FFB9D0 /* CaregiverTrackerApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1C823E02C70949F1B2FFB9D0 /* CaregiverTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaregiverTrackerApp.swift; sourceTree = "<group>"; };
-		E013953E426242DA84717E33 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open_dyslexic/OpenDyslexic-Regular.otf"; sourceTree = SOURCE_ROOT; };
+		45A875B6087942BAA3484205 /* open_dyslexic/OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "open_dyslexic/OpenDyslexic-Regular.otf"; sourceTree = SOURCE_ROOT; };
 		B3870A0A6ECB4B75BAB40CEA /* CaregiverTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CaregiverTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E013953E426242DA84717E33 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,7 +34,7 @@
 			isa = PBXGroup;
 			children = (
 				35D9BC6363F14FE6942F624A /* CaregiverTrackerApp */,
-				45A875B6087942BAA3484205 /* OpenDyslexic-Regular.otf */,
+				45A875B6087942BAA3484205 /* open_dyslexic/OpenDyslexic-Regular.otf */,
 				7CB5C3FA49464604A125F09D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,7 +114,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C14545C9BD34553AA40908D /* OpenDyslexic-Regular.otf in Resources */,
+				5C14545C9BD34553AA40908D /* open_dyslexic/OpenDyslexic-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +133,61 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0AF6328AC5F544108E42A660 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		87C24AF8B4BC44018ECA4DC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -195,61 +250,6 @@
 			};
 			name = Debug;
 		};
-		0AF6328AC5F544108E42A660 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		F777064B901D4EEEB736447D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -272,10 +272,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arjunrao.caregivertracker";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arjunrao.caregivertracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -304,10 +305,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.arjunrao.caregivertracker";
+				PRODUCT_BUNDLE_IDENTIFIER = com.arjunrao.caregivertracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,20 +319,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		59AD57FC30F3449F8D9C411A /* Build configuration list for PBXProject "CaregiverTrackerApp" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				87C24AF8B4BC44018ECA4DC0 /* Debug */,
-				0AF6328AC5F544108E42A660 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		08E0DCD861BA43A9874562EC /* Build configuration list for PBXNativeTarget "CaregiverTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F777064B901D4EEEB736447D /* Debug */,
 				FC6B27904AA24BE4B456CC40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		59AD57FC30F3449F8D9C411A /* Build configuration list for PBXProject "CaregiverTrackerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				87C24AF8B4BC44018ECA4DC0 /* Debug */,
+				0AF6328AC5F544108E42A660 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
