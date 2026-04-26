@@ -1,5 +1,6 @@
 import SwiftUI
 import UserNotifications
+import AVFoundation
 
 @main
 struct CaregiverTrackerApp: App {
@@ -34,6 +35,33 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         case .spanish: "Español"
         case .hindi: "हिन्दी"
         }
+    }
+
+    var speechCode: String {
+        switch self {
+        case .english: "en-US"
+        case .chinese: "zh-CN"
+        case .spanish: "es-ES"
+        case .hindi: "hi-IN"
+        }
+    }
+}
+
+final class PageSpeaker {
+    private let synthesizer = AVSpeechSynthesizer()
+
+    func speak(_ text: String, language: AppLanguage) {
+        let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanText.isEmpty else { return }
+
+        if synthesizer.isSpeaking {
+            synthesizer.stopSpeaking(at: .immediate)
+        }
+
+        let utterance = AVSpeechUtterance(string: cleanText)
+        utterance.voice = AVSpeechSynthesisVoice(language: language.speechCode)
+        utterance.rate = 0.38
+        synthesizer.speak(utterance)
     }
 }
 

@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var kind = TaskKind.medication
     @State private var details = ""
     @State private var filterDate = Date()
+    @State private var speaker = PageSpeaker()
 
     private var language: AppLanguage {
         AppLanguage(rawValue: languageCode) ?? .english
@@ -78,6 +79,16 @@ struct ContentView: View {
                         .foregroundStyle(.secondary)
                 }
 
+                Section(text("accessibility")) {
+                    Button(text("readPageAloud")) {
+                        speaker.speak(readAloudText, language: language)
+                    }
+
+                    Text(text("readPageHelp"))
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
                 Section(text("tasks")) {
                     if dayTasks.isEmpty {
                         Text(text("noTasks"))
@@ -100,6 +111,40 @@ struct ContentView: View {
         return TaskKind.allCases.map { taskKind in
             "\(label(for: taskKind)): \(counts[taskKind, default: 0])"
         }.joined(separator: " • ")
+    }
+
+    private var readAloudText: String {
+        var lines = [
+            text("appTitle"),
+            text("quickSummary"),
+            summaryText,
+            text("tasks")
+        ]
+
+        if dayTasks.isEmpty {
+            lines.append(text("noTasks"))
+        } else {
+            lines.append(contentsOf: dayTasks.map(readAloudDescription(for:)))
+        }
+
+        return lines.joined(separator: ". ")
+    }
+
+    private func readAloudDescription(for task: CareTask) -> String {
+        var parts = [
+            label(for: task.kind),
+            task.caregiver
+        ]
+
+        if let dueTime = task.dueTime {
+            parts.append("\(text("dueAt")) \(dueTime.formatted(date: .omitted, time: .shortened))")
+        }
+
+        if !task.details.isEmpty {
+            parts.append(task.details)
+        }
+
+        return parts.joined(separator: ". ")
     }
 
     private func addTask() {
@@ -189,6 +234,9 @@ enum Strings {
             "reminders": "Reminders",
             "enableReminders": "Enable reminders",
             "nativeReminderHelp": "iOS notifications can still appear when the app is closed after permission is granted.",
+            "accessibility": "Accessibility",
+            "readPageAloud": "Read page aloud",
+            "readPageHelp": "Reads the current summary and task list slowly.",
             "tasks": "Tasks",
             "noTasks": "No tasks logged for this day yet.",
             "delete": "Delete",
@@ -214,6 +262,9 @@ enum Strings {
             "reminders": "提醒",
             "enableReminders": "启用提醒",
             "nativeReminderHelp": "授予权限后，即使应用关闭，iOS 通知也可以显示。",
+            "accessibility": "辅助功能",
+            "readPageAloud": "朗读页面",
+            "readPageHelp": "慢速朗读当前摘要和任务列表。",
             "tasks": "任务",
             "noTasks": "这一天还没有记录任务。",
             "delete": "删除",
@@ -239,6 +290,9 @@ enum Strings {
             "reminders": "Recordatorios",
             "enableReminders": "Activar recordatorios",
             "nativeReminderHelp": "Las notificaciones de iOS pueden aparecer aunque la app este cerrada despues de dar permiso.",
+            "accessibility": "Accesibilidad",
+            "readPageAloud": "Leer pagina en voz alta",
+            "readPageHelp": "Lee lentamente el resumen actual y la lista de tareas.",
             "tasks": "Tareas",
             "noTasks": "Todavia no hay tareas registradas para este dia.",
             "delete": "Eliminar",
@@ -264,6 +318,9 @@ enum Strings {
             "reminders": "रिमाइंडर",
             "enableReminders": "रिमाइंडर चालू करें",
             "nativeReminderHelp": "अनुमति मिलने के बाद ऐप बंद होने पर भी iOS सूचनाएं दिख सकती हैं।",
+            "accessibility": "सुलभता",
+            "readPageAloud": "पेज ज़ोर से पढ़ें",
+            "readPageHelp": "मौजूदा सारांश और कार्य सूची को धीरे-धीरे पढ़ता है।",
             "tasks": "कार्य",
             "noTasks": "इस दिन के लिए अभी कोई कार्य दर्ज नहीं है।",
             "delete": "हटाएं",
