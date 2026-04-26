@@ -1,5 +1,23 @@
 # Hackathon
 
+## Caregiver Tracker
+
+This repo contains two versions of the Caregiver Task Tracker:
+
+- Web app: `index.html`, `style.css`, `script.js`, deployed with GitHub Pages.
+- iOS app: `CaregiverTrackerApp.xcodeproj`, a native SwiftUI app for Xcode.
+
+The iOS app supports caregiver task entry, task type/date/time, native local notifications, local persistence, and English, Simplified Chinese, Spanish, and Hindi UI text.
+
+To open the iOS app:
+
+1. Open `CaregiverTrackerApp.xcodeproj` in Xcode.
+2. Select the `CaregiverTracker` target.
+3. Set your Apple Developer Team in Signing & Capabilities.
+4. Build/run on a simulator or iPhone.
+
+See `APP_STORE.md` for the remaining App Store publishing steps.
+
 Helping Elderly & Disabled People — Project Ideas
 1. Simple Communication Board
 A large-button, easy-to-tap web app for people who have trouble speaking (stroke survivors, autism, etc.) where they can tap pictures/icons to communicate basic needs — "I'm hungry," "I need help," "I'm in pain." No login, works on any device, immediately usable.
