@@ -1,6 +1,8 @@
 const TASK_TYPES = ["Medication", "Meal", "Appointment", "Other"];
 const TASK_STORAGE_KEY = "caretakerTasks_v1";
 const LANGUAGE_STORAGE_KEY = "caregiverLanguage_v1";
+const REMINDER_WINDOW_MS = 5 * 60 * 1000;
+const reminderTimers = new Map();
 
 const translations = {
 en: {
@@ -13,6 +15,7 @@ addTaskHeading: "Add a task",
 caregiverNameLabel: "Caregiver name",
 caregiverPlaceholder: "e.g., Maria",
 dateLabel: "Date",
+timeLabel: "Time",
 taskTypeLabel: "Task type",
 typeMedication: "Medication",
 typeMeal: "Meal",
@@ -25,6 +28,13 @@ clearDayButton: "Clear selected day",
 tasksHeading: "Tasks",
 quickSummaryHeading: "Quick summary",
 viewDayLabel: "View a specific day",
+remindersHeading: "Reminders",
+remindersHelp: "Enable browser notifications for task times while this app is open.",
+enableNotifications: "Enable reminders",
+notificationsEnabled: "Reminders are enabled.",
+notificationsDenied: "Notifications are blocked in this browser.",
+notificationsUnsupported: "Notifications are not supported in this browser.",
+notificationsDefault: "Reminders are off until you enable browser notifications.",
 backupHeading: "Backup",
 exportJson: "Export JSON",
 importJson: "Import JSON",
@@ -39,6 +49,9 @@ showingTasks: "Showing tasks for {date}. ({count} total)",
 countsLine: "Medication: {Medication} • Meal: {Meal} • Appointment: {Appointment} • Other: {Other}",
 noTasks: "No tasks logged for this day yet.",
 addedTime: "{caregiver} • added {time}",
+dueTime: "Due at {time}",
+reminderTitle: "{type} reminder",
+reminderBody: "{details}",
 deleteTask: "Delete",
 missingPageText: "There are no words on this page to read!",
 invalidImport: "Invalid import file format.",
@@ -55,6 +68,7 @@ addTaskHeading: "添加任务",
 caregiverNameLabel: "护理人员姓名",
 caregiverPlaceholder: "例如：Maria",
 dateLabel: "日期",
+timeLabel: "时间",
 taskTypeLabel: "任务类型",
 typeMedication: "用药",
 typeMeal: "用餐",
@@ -67,6 +81,13 @@ clearDayButton: "清除所选日期",
 tasksHeading: "任务",
 quickSummaryHeading: "快速摘要",
 viewDayLabel: "查看指定日期",
+remindersHeading: "提醒",
+remindersHelp: "启用浏览器通知，以便在此应用打开时按任务时间提醒。",
+enableNotifications: "启用提醒",
+notificationsEnabled: "提醒已启用。",
+notificationsDenied: "此浏览器已阻止通知。",
+notificationsUnsupported: "此浏览器不支持通知。",
+notificationsDefault: "提醒已关闭，请先启用浏览器通知。",
 backupHeading: "备份",
 exportJson: "导出 JSON",
 importJson: "导入 JSON",
@@ -81,6 +102,9 @@ showingTasks: "正在显示 {date} 的任务。（共 {count} 项）",
 countsLine: "用药：{Medication} • 用餐：{Meal} • 预约：{Appointment} • 其他：{Other}",
 noTasks: "这一天还没有记录任务。",
 addedTime: "{caregiver} • 添加于 {time}",
+dueTime: "时间：{time}",
+reminderTitle: "{type} 提醒",
+reminderBody: "{details}",
 deleteTask: "删除",
 missingPageText: "此页面没有可朗读的文字！",
 invalidImport: "导入文件格式无效。",
@@ -97,6 +121,7 @@ addTaskHeading: "Agregar una tarea",
 caregiverNameLabel: "Nombre del cuidador",
 caregiverPlaceholder: "p. ej., Maria",
 dateLabel: "Fecha",
+timeLabel: "Hora",
 taskTypeLabel: "Tipo de tarea",
 typeMedication: "Medicamento",
 typeMeal: "Comida",
@@ -109,6 +134,13 @@ clearDayButton: "Borrar dia seleccionado",
 tasksHeading: "Tareas",
 quickSummaryHeading: "Resumen rapido",
 viewDayLabel: "Ver un dia especifico",
+remindersHeading: "Recordatorios",
+remindersHelp: "Activa notificaciones del navegador para los horarios de tareas mientras esta app este abierta.",
+enableNotifications: "Activar recordatorios",
+notificationsEnabled: "Los recordatorios estan activados.",
+notificationsDenied: "Las notificaciones estan bloqueadas en este navegador.",
+notificationsUnsupported: "Este navegador no admite notificaciones.",
+notificationsDefault: "Los recordatorios estan apagados hasta que actives las notificaciones del navegador.",
 backupHeading: "Copia de seguridad",
 exportJson: "Exportar JSON",
 importJson: "Importar JSON",
@@ -123,6 +155,9 @@ showingTasks: "Mostrando tareas para {date}. ({count} en total)",
 countsLine: "Medicamento: {Medication} • Comida: {Meal} • Cita: {Appointment} • Otro: {Other}",
 noTasks: "Todavia no hay tareas registradas para este dia.",
 addedTime: "{caregiver} • agregado a las {time}",
+dueTime: "Hora: {time}",
+reminderTitle: "Recordatorio de {type}",
+reminderBody: "{details}",
 deleteTask: "Eliminar",
 missingPageText: "No hay palabras en esta pagina para leer.",
 invalidImport: "Formato de archivo de importacion no valido.",
@@ -139,6 +174,7 @@ addTaskHeading: "कार्य जोड़ें",
 caregiverNameLabel: "देखभालकर्ता का नाम",
 caregiverPlaceholder: "जैसे, Maria",
 dateLabel: "तारीख",
+timeLabel: "समय",
 taskTypeLabel: "कार्य प्रकार",
 typeMedication: "दवा",
 typeMeal: "भोजन",
@@ -151,6 +187,13 @@ clearDayButton: "चुनी तारीख साफ़ करें",
 tasksHeading: "कार्य",
 quickSummaryHeading: "त्वरित सारांश",
 viewDayLabel: "किसी खास दिन को देखें",
+remindersHeading: "रिमाइंडर",
+remindersHelp: "जब यह ऐप खुला हो, तब कार्य समय के लिए ब्राउज़र सूचनाएं चालू करें।",
+enableNotifications: "रिमाइंडर चालू करें",
+notificationsEnabled: "रिमाइंडर चालू हैं।",
+notificationsDenied: "इस ब्राउज़र में सूचनाएं ब्लॉक हैं।",
+notificationsUnsupported: "यह ब्राउज़र सूचनाओं का समर्थन नहीं करता।",
+notificationsDefault: "ब्राउज़र सूचनाएं चालू करने तक रिमाइंडर बंद हैं।",
 backupHeading: "बैकअप",
 exportJson: "JSON निर्यात करें",
 importJson: "JSON आयात करें",
@@ -165,6 +208,9 @@ showingTasks: "{date} के कार्य दिखाए जा रहे �
 countsLine: "दवा: {Medication} • भोजन: {Meal} • अपॉइंटमेंट: {Appointment} • अन्य: {Other}",
 noTasks: "इस दिन के लिए अभी कोई कार्य दर्ज नहीं है।",
 addedTime: "{caregiver} • {time} पर जोड़ा गया",
+dueTime: "समय: {time}",
+reminderTitle: "{type} रिमाइंडर",
+reminderBody: "{details}",
 deleteTask: "हटाएं",
 missingPageText: "इस पेज पर पढ़ने के लिए कोई शब्द नहीं हैं!",
 invalidImport: "आयात फ़ाइल का प्रारूप अमान्य है।",
@@ -219,6 +265,25 @@ function normalizeTaskType(type) {
 return TASK_TYPES.includes(type) ? type : "Other";
 }
 
+function getDueDate(task) {
+if (!task.date || !task.dueTime) return null;
+
+const dueDate = new Date(`${task.date}T${task.dueTime}:00`);
+return Number.isNaN(dueDate.getTime()) ? null : dueDate;
+}
+
+function formatTaskTime(timeValue) {
+if (!timeValue) return "";
+
+const timeDate = new Date(`2000-01-01T${timeValue}:00`);
+if (Number.isNaN(timeDate.getTime())) return timeValue;
+
+return timeDate.toLocaleTimeString([], {
+hour: "numeric",
+minute: "2-digit"
+});
+}
+
 function escapeText(s) {
 return String(s ?? "")
 .replaceAll("&", "&amp;")
@@ -245,11 +310,14 @@ document.addEventListener("DOMContentLoaded", function () {
 let tasks = getTasks();
 
 const taskDateInput = document.getElementById("taskDate");
+const taskTimeInput = document.getElementById("taskTime");
 const filterDateInput = document.getElementById("filterDate");
 const languageSelect = document.getElementById("languageSelect");
 const listEl = document.getElementById("taskList");
 const daySummaryEl = document.getElementById("daySummary");
 const countsLineEl = document.getElementById("countsLine");
+const notificationStatusEl = document.getElementById("notificationStatus");
+const enableNotificationsButton = document.getElementById("enableNotifications");
 
 currentLanguage = getSavedLanguage();
 languageSelect.value = currentLanguage;
@@ -260,7 +328,16 @@ filterDateInput.value = taskDateInput.value;
 function getDayTasks(dayISO) {
 return tasks
 .filter((task) => task.date === dayISO)
-.sort((a, b) => b.createdAt - a.createdAt);
+.sort((a, b) => {
+const aDue = getDueDate(a);
+const bDue = getDueDate(b);
+
+if (aDue && bDue) return aDue - bDue;
+if (aDue) return -1;
+if (bDue) return 1;
+
+return b.createdAt - a.createdAt;
+});
 }
 
 function countByType(dayISO) {
@@ -281,8 +358,113 @@ counts[type] = (counts[type] || 0) + 1;
 return counts;
 }
 
+function updateNotificationStatus() {
+if (!("Notification" in window)) {
+notificationStatusEl.textContent = t("notificationsUnsupported");
+enableNotificationsButton.disabled = true;
+return;
+}
+
+if (Notification.permission === "granted") {
+notificationStatusEl.textContent = t("notificationsEnabled");
+return;
+}
+
+if (Notification.permission === "denied") {
+notificationStatusEl.textContent = t("notificationsDenied");
+return;
+}
+
+notificationStatusEl.textContent = t("notificationsDefault");
+}
+
+async function registerReminderWorker() {
+if (!("serviceWorker" in navigator)) return null;
+
+try {
+const registration = await navigator.serviceWorker.register("sw.js");
+return registration;
+} catch (err) {
+return null;
+}
+}
+
+async function showReminderNotification(task) {
+if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+const type = normalizeTaskType(task.type);
+const formattedTime = formatTaskTime(task.dueTime);
+const fallbackDetails = t("dueTime", { time: formattedTime });
+const details = task.details && task.details.trim() ? task.details.trim() : fallbackDetails;
+const title = t("reminderTitle", { type: typeLabel(type) });
+const options = {
+body: t("reminderBody", { details }),
+tag: `caregiver-task-${task.id}`,
+renotify: true,
+data: {
+url: window.location.href
+}
+};
+
+const registration = await registerReminderWorker();
+if (registration && registration.showNotification) {
+registration.showNotification(title, options);
+return;
+}
+
+new Notification(title, options);
+}
+
+function markTaskNotified(taskId) {
+tasks = tasks.map((task) => {
+if (task.id !== taskId) return task;
+
+return {
+...task,
+notifiedAt: Date.now()
+};
+});
+setTasks(tasks);
+}
+
+function clearReminderTimers() {
+reminderTimers.forEach((timerId) => window.clearTimeout(timerId));
+reminderTimers.clear();
+}
+
+function scheduleReminders() {
+clearReminderTimers();
+
+if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+const now = Date.now();
+
+tasks.forEach((task) => {
+if (!task.dueTime || task.notifiedAt) return;
+
+const dueDate = getDueDate(task);
+if (!dueDate) return;
+
+const delay = dueDate.getTime() - now;
+if (delay < -REMINDER_WINDOW_MS) return;
+
+const timerDelay = Math.max(delay, 0);
+const timerId = window.setTimeout(async function () {
+const latestTask = tasks.find((candidate) => candidate.id === task.id);
+if (!latestTask || latestTask.notifiedAt) return;
+
+await showReminderNotification(latestTask);
+markTaskNotified(latestTask.id);
+render();
+}, Math.min(timerDelay, 2147483647));
+
+reminderTimers.set(task.id, timerId);
+});
+}
+
 function render() {
 applyTranslations();
+updateNotificationStatus();
 
 const day = filterDateInput.value || todayISO();
 const dayTasks = getDayTasks(day);
@@ -294,6 +476,7 @@ count: dayTasks.length
 
 const c = countByType(day);
 countsLineEl.textContent = t("countsLine", c);
+scheduleReminders();
 
 if (dayTasks.length === 0) {
 listEl.innerHTML = `<div class="empty">${escapeText(t("noTasks"))}</div>`;
@@ -304,6 +487,9 @@ listEl.innerHTML = dayTasks
 .map((task) => {
 const details = task.details && task.details.trim() ? task.details.trim() : "-";
 const type = normalizeTaskType(task.type);
+const dueLabel = task.dueTime ? t("dueTime", {
+time: formatTaskTime(task.dueTime)
+}) : "";
 const addedTime = new Date(task.createdAt).toLocaleTimeString([], {
 hour: "2-digit",
 minute: "2-digit"
@@ -322,6 +508,7 @@ time: addedTime
 </div>
 
 <div class="task-desc">${escapeText(details)}</div>
+${dueLabel ? `<div class="meta">${escapeText(dueLabel)}</div>` : ""}
 
 <div class="task-actions">
 <button class="link-btn" type="button" data-action="delete" data-id="${escapeText(task.id)}">
@@ -340,6 +527,7 @@ e.preventDefault();
 const caregiverName = document.getElementById("caregiverName").value.trim();
 const date = document.getElementById("taskDate").value;
 const type = normalizeTaskType(document.getElementById("taskType").value);
+const dueTime = taskTimeInput.value;
 const details = document.getElementById("taskDetails").value.trim();
 
 if (!caregiverName || !date || !type) return;
@@ -349,6 +537,7 @@ id: uid(),
 caregiver: caregiverName,
 date,
 type,
+dueTime,
 details,
 createdAt: Date.now()
 });
@@ -357,6 +546,7 @@ setTasks(tasks);
 
 filterDateInput.value = date;
 document.getElementById("taskDetails").value = "";
+taskTimeInput.value = "";
 
 render();
 });
@@ -376,6 +566,20 @@ filterDateInput.addEventListener("change", render);
 languageSelect.addEventListener("change", function () {
 currentLanguage = translations[languageSelect.value] ? languageSelect.value : "en";
 localStorage.setItem(LANGUAGE_STORAGE_KEY, currentLanguage);
+render();
+});
+
+enableNotificationsButton.addEventListener("click", async function () {
+if (!("Notification" in window)) {
+updateNotificationStatus();
+return;
+}
+
+const permission = await Notification.requestPermission();
+if (permission === "granted") {
+await registerReminderWorker();
+}
+
 render();
 });
 
@@ -432,7 +636,8 @@ return;
 
 tasks = data.tasks.map((task) => ({
 ...task,
-type: normalizeTaskType(task.type)
+type: normalizeTaskType(task.type),
+dueTime: task.dueTime || ""
 }));
 setTasks(tasks);
 

@@ -200,6 +200,15 @@ font-weight: 700;
 opacity: 0.95;
 }
 
+.helper-text {
+font-size: 15px;
+font-weight: 700;
+}
+
+.notification-status {
+margin-top: 10px;
+}
+
 .task-desc {
 margin-top: 6px;
 font-weight: 700;

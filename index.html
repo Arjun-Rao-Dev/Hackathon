@@ -49,6 +49,9 @@
 </div>
 </div>
 
+<label for="taskTime" data-i18n="timeLabel">Time</label>
+<input id="taskTime" name="taskTime" type="time" />
+
 <label for="taskType" data-i18n="taskTypeLabel">Task type</label>
 <select id="taskType" name="taskType" required>
 <option value="Medication" data-i18n="typeMedication">Medication</option>
@@ -82,6 +85,13 @@
 <div style="margin-top: 12px;">
 <div class="meta" id="countsLine">—</div>
 </div>
+
+<hr />
+
+<h3 data-i18n="remindersHeading">Reminders</h3>
+<p class="helper-text" data-i18n="remindersHelp">Enable browser notifications for task times while this app is open.</p>
+<button class="btn" type="button" id="enableNotifications" data-i18n="enableNotifications">Enable reminders</button>
+<div class="meta notification-status" id="notificationStatus">—</div>
 
 <hr />
 
